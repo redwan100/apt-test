@@ -33,8 +33,6 @@ const App = () => {
     e.preventDefault();
 
     try {
-      const url = "https://softwareapi.techelementbd.com/papi/addpurchaseapil/";
-
       const formDataToSend = new FormData();
       formDataToSend.append("p_k", formData.p_k);
       formDataToSend.append("Reference_No", formData.Reference_No);
@@ -48,10 +46,16 @@ const App = () => {
       // Append the file
       formDataToSend.append("Attached_Document", formData.Attached_Document);
 
-      const response = await fetch(url, {
-        method: "POST",
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        "https://softwareapi.techelementbd.com/papi/addpurchaseapil/",
+        {
+          method: "POST",
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+          body: { formDataToSend },
+        }
+      );
 
       if (response.ok) {
         console.log("Data sent successfully!");
@@ -75,11 +79,14 @@ const App = () => {
     }
   };
 
+  console.log(formData);
+
   return (
     <div className="bg-slate-100 w-full min-h-screen p-4">
       <form
         className=" mx-auto bg-white px-2 w-full  drop-shadow-md rounded-md  max-w-2xl py-2"
         onSubmit={handleSubmit}
+        encType="multipart/form-data"
       >
         <div className="md:grid md:grid-cols-2 gap-5 md:items-center w-full p-4">
           {/* Add input fields for each property in the formData object */}
