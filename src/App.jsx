@@ -22,59 +22,59 @@ const App = () => {
     }));
   };
 
-  // const handleFileChange = (e) => {
-  //   setFormData({
-  //     ...formData,
-  //     image: e.target.files[0]?.name,
-  //   });
-  // };
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      image: e.target.files[0]?.name,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const formDataToSend = new FormData();
+    const formDataToSend = new FormData();
 
-    // // Object.entries(formData).forEach(([key, value]) => {
-    // //   formDataToSend.append(key, value);
-    // // });
+    //   // // Object.entries(formData).forEach(([key, value]) => {
+    //   // //   formDataToSend.append(key, value);
+    //   // // });
 
-    // formDataToSend.append("p_k", Number(formData.p_k));
-    // formDataToSend.append("Reference_No", formData.Reference_No);
-    // formDataToSend.append("Purchase_Date", Number(formData.Purchase_Date));
-    // formDataToSend.append("Purchase_Status", formData.Purchase_Status);
-    // formDataToSend.append("Address", formData.Address);
-    // formDataToSend.append("Pay_Term", Number(formData.Pay_Term));
-    // // image file
-    // formDataToSend.append("Attached_Document", formData.Attached_Document);
-    // formDataToSend.append("Supplier", Number(formData.Supplier));
-    // formDataToSend.append(
-    //   "Business_Location",
-    //   Number(formData.Business_Location)
-    // );
+    formDataToSend.append("p_k", Number(formData.p_k));
+    formDataToSend.append("Reference_No", formData.Reference_No);
+    formDataToSend.append("Purchase_Date", Number(formData.Purchase_Date));
+    formDataToSend.append("Purchase_Status", formData.Purchase_Status);
+    formDataToSend.append("Address", formData.Address);
+    formDataToSend.append("Pay_Term", Number(formData.Pay_Term));
+    // image file
+    formDataToSend.append("Attached_Document", formData.Attached_Document);
+    formDataToSend.append("Supplier", Number(formData.Supplier));
+    formDataToSend.append(
+      "Business_Location",
+      Number(formData.Business_Location)
+    );
 
-    const newPurchaseData = {
-      p_k: Number(formData.p_k),
-      Reference_No: formData.Reference_No,
-      Purchase_Date: formData.Purchase_Date,
-      Purchase_Status: Number(formData.Purchase_Status),
-      Address: formData.Address,
-      Pay_Term: Number(formData.Pay_Term),
-      Attached_Document: formData.Attached_Document,
-      Supplier: Number(formData.Supplier),
-      Business_Location: Number(formData.Business_Location),
-    };
+    // const newPurchaseData = {
+    //   p_k: Number(formData.p_k),
+    //   Reference_No: formData.Reference_No,
+    //   Purchase_Date: formData.Purchase_Date,
+    //   Purchase_Status: Number(formData.Purchase_Status),
+    //   Address: formData.Address,
+    //   Pay_Term: Number(formData.Pay_Term),
+    //   Attached_Document: formData.Attached_Document,
+    //   Supplier: Number(formData.Supplier),
+    //   Business_Location: Number(formData.Business_Location),
+    // };
 
-    console.log(newPurchaseData);
+    // console.log(newPurchaseData);
 
     try {
       const res = await fetch(
-        "https://softwareapi.techelementbd.com/papi/addpurchaseapil/?format=api",
+        "https://softwareapi.techelementbd.com/papi/addpurchaseapil/",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: newPurchaseData,
+          body: formDataToSend,
         }
       );
 
@@ -209,7 +209,7 @@ const App = () => {
               id=" Attached_Document"
               name="Attached_Document"
               value={formData.Attached_Document}
-              onChange={handleChange}
+              onChange={handleFileChange}
               className="mt-1 p-2 border rounded-md w-full"
             />
           </div>
