@@ -8,7 +8,7 @@ const App = () => {
     Purchase_Status: "",
     Address: "",
     Pay_Term: "",
-    Attached_Document: "",
+    Attached_Document: null,
     Supplier: "",
     Business_Location: "",
   });
@@ -16,76 +16,64 @@ const App = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
-  const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      image: e.target.files[0]?.name,
-    });
+    if (name === "Attached_Document") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: e.target.files[0],
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formDataToSend = new FormData();
-
-    //   // // Object.entries(formData).forEach(([key, value]) => {
-    //   // //   formDataToSend.append(key, value);
-    //   // // });
-
-    formDataToSend.append("p_k", Number(formData.p_k));
-    formDataToSend.append("Reference_No", formData.Reference_No);
-    formDataToSend.append("Purchase_Date", Number(formData.Purchase_Date));
-    formDataToSend.append("Purchase_Status", formData.Purchase_Status);
-    formDataToSend.append("Address", formData.Address);
-    formDataToSend.append("Pay_Term", Number(formData.Pay_Term));
-    // image file
-    formDataToSend.append("Attached_Document", formData.Attached_Document);
-    formDataToSend.append("Supplier", Number(formData.Supplier));
-    formDataToSend.append(
-      "Business_Location",
-      Number(formData.Business_Location)
-    );
-
-    // const newPurchaseData = {
-    //   p_k: Number(formData.p_k),
-    //   Reference_No: formData.Reference_No,
-    //   Purchase_Date: formData.Purchase_Date,
-    //   Purchase_Status: Number(formData.Purchase_Status),
-    //   Address: formData.Address,
-    //   Pay_Term: Number(formData.Pay_Term),
-    //   Attached_Document: formData.Attached_Document,
-    //   Supplier: Number(formData.Supplier),
-    //   Business_Location: Number(formData.Business_Location),
-    // };
-
-    // console.log(newPurchaseData);
-
     try {
-      const res = await fetch(
-        "https://softwareapi.techelementbd.com/papi/addpurchaseapil/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: formDataToSend,
-        }
-      );
+      const url = "https://softwareapi.techelementbd.com/papi/addpurchaseapil";
 
-      const data = await res.json();
-      console.log(data);
+      const formDataToSend = new FormData();
+      formDataToSend.append("p_k", formData.p_k);
+      formDataToSend.append("Reference_No", formData.Reference_No);
+      formDataToSend.append("Purchase_Date", formData.Purchase_Date);
+      // Append other form fields as needed
+      formDataToSend.append("Address", formData.Address);
+      formDataToSend.append("Pay_Term", formData.Pay_Term);
+      // formDataToSend.append('Attached_Document', formData.Attached_Document);
+      formDataToSend.append("Supplier", formData.Supplier);
+      formDataToSend.append("Business_Location", formData.Business_Location);
+      // Append the file
+      formDataToSend.append("Attached_Document", formData.Attached_Document);
+
+      const response = await fetch(url, {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      if (response.ok) {
+        console.log("Data sent successfully!");
+        // Reset the form or clear the state as needed
+        setFormData({
+          p_k: "",
+          Reference_No: "",
+          Purchase_Date: "",
+          Purchase_Status: "",
+          Address: "",
+          Pay_Term: "",
+          Attached_Document: null,
+          Supplier: "",
+          Business_Location: "",
+        });
+      } else {
+        console.error("Error:", response.statusText);
+      }
     } catch (error) {
-      console.error("Error posting purchase data:", error);
+      console.error("Error:", error);
     }
   };
-
-  console.log(formData);
 
   return (
     <div className="bg-slate-100 w-full min-h-screen p-4">
@@ -208,8 +196,8 @@ const App = () => {
               accept="image/*"
               id=" Attached_Document"
               name="Attached_Document"
-              value={formData.Attached_Document}
-              onChange={handleFileChange}
+              // value={formData.Attached_Document}
+              onChange={handleChange}
               className="mt-1 p-2 border rounded-md w-full"
             />
           </div>
