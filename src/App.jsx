@@ -33,7 +33,7 @@ const App = () => {
     e.preventDefault();
 
     try {
-      const url = "https://softwareapi.techelementbd.com/papi/addpurchaseapil";
+      const url = "https://softwareapi.techelementbd.com/papi/addpurchaseapil/";
 
       const formDataToSend = new FormData();
       formDataToSend.append("p_k", formData.p_k);
